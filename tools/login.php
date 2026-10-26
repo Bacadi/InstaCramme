@@ -10,7 +10,7 @@
     <main>
         <section id="login-section">
             <h1>Connexion à InstaCramme</h1>
-            <form>
+            <form id="login-form">
                 <label for="username">Pseudo</label>
                 <input type="text" id="username" name="username" required>
                 <label for="password">Mot de passe</label>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 26, 2026 at 11:04 AM
+-- Generation Time: Oct 26, 2026 at 03:06 PM
 -- Server version: 26.7.0
 -- PHP Version: 8.1.10
 
@@ -31,7 +31,7 @@ CREATE TABLE `comment` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
   `photo_id` int NOT NULL,
-  `content` varchar(900) NOT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `written_at` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -56,7 +56,8 @@ CREATE TABLE `like` (
 CREATE TABLE `photo` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
-  `posted_at` timestamp NOT NULL
+  `posted_at` timestamp NOT NULL,
+  `image_path` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------

@@ -169,6 +169,11 @@ input:hover {
     text-align: center;
 }
 
+#profile-info {
+    border: 1px solid var(--border);
+    min-height: 15rem;
+}
+
 #profile-nav {
     border: 1px solid var(--border);
     height: 10%;

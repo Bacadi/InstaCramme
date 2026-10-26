@@ -20,6 +20,13 @@
                 alt="exit">
         </a>
     </header>
+    <main>
+        <section id="main-section">
+            <h1>InstaCramme</h1>
+            <div id="img-container">
+            </div>
+        </section>
+    </main>
 </body>
 
 </html>

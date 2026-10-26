@@ -21,7 +21,7 @@
         </a>
     </header>
     <main>
-        <section id="main-section">
+        <section id="main-index-section">
             <h1>InstaCramme</h1>
             <div id="img-container">
             </div>

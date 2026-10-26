@@ -199,3 +199,32 @@ input:hover {
     color: var(--bodybg);
     border-color: var(--txt);
 }
+
+/* POST */
+
+#add-post-btn {
+    text-decoration: none;
+    padding: 0.5rem;
+    width: 2rem;
+    height:2rem;
+    background-color: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius1);
+    transition: all 0.3s ease;
+
+    text-align: center;
+    font-size: 1.75rem;
+
+    position: fixed;
+    z-index: 99;
+    right: 2rem;
+    bottom: 2rem;
+}
+
+#add-post-btn:hover {
+    cursor: pointer;
+    background-color: var(--but);
+    color: var(--bodybg);
+    border-color: var(--txt);
+    transform: scale(1.5)
+}

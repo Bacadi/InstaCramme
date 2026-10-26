@@ -1,0 +1,15 @@
+/* variables racine racine*/
+:root {
+
+    /* Couleurs */
+    --bodybg: #FFDFB8;
+    --bg: #FFD6A4;
+    --border: #CA842D;
+    --but: #CA842D;
+    --titles:  #7D4F00;
+    --aux: #FFEBD1; 
+
+    /* Variables */
+    --radius1: 50px;
+    --radius2: 100%; 
+}

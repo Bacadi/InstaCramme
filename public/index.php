@@ -31,6 +31,7 @@
             </div>
         </section>
     </main>
+    <a href="add-post.php" id="add-post-btn">+</a>
 </body>
 
 </html>

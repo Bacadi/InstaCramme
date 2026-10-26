@@ -15,7 +15,7 @@
                 <input type="text" id="username" name="username" required>
                 <label for="password">Mot de passe</label>
                 <input type="text" id="password" name="password" required>
-                <button type="submit">→</button>
+                <button type="submit" id="login-btn">→</button>
             </form>
         </section>
     </main>

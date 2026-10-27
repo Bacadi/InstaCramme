@@ -33,7 +33,6 @@ require_once __DIR__ . "/../tools/auth.php";
         <section id="main-index-section">
             <h1>InstaCramme</h1>
             <div id="img-container">
-                <?= htmlspecialchars($_SESSION["user_id"], ENT_QUOTES, 'UTF-8') ?>
             </div>
         </section>
     </main>

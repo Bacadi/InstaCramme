@@ -37,7 +37,7 @@ $comments = $usercom->fetchAll(PDO::FETCH_ASSOC);
     <title>Profile</title>
     <link rel="stylesheet" href="../tools/assets/style.css">
 </head>
-
+<script src="js/likes.js" defer></script>
 <body>
     <main>
         <header>

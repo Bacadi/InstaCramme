@@ -9,6 +9,8 @@ $stmt = $pdo->prepare("
     SELECT
         p.id,
         p.image_path,
+        p.title,
+        p.description,
         p.posted_at,
         u.id AS author_id,
         u.username,
@@ -53,6 +55,8 @@ if ($photos) {
     <link rel="stylesheet" href="../tools/assets/style.css">
 </head>
 
+<script src="js/likes.js" defer></script>
+
 <body>
     <main>
         <header>
@@ -76,18 +80,24 @@ if ($photos) {
                     <article>
                         <div>
                             <a href="profile.php?id=<?= (int) $photo['author_id'] ?>">
-                                <?= htmlspecialchars($photo['username'], ENT_QUOTES, 'UTF-8')?></a>
+                                <?= htmlspecialchars($photo['username'], ENT_QUOTES, 'UTF-8') ?></a>
                             <time>
                                 <?= htmlspecialchars($photo['posted_at'], ENT_QUOTES, 'UTF-8') ?>
                             </time>
                         </div>
 
-                        <img src="<?= htmlspecialchars($photo['image_path'], ENT_QUOTES, 'UTF-8') ?>" alt="">
+                        <img class="post-img" src="<?= htmlspecialchars($photo['image_path'], ENT_QUOTES, 'UTF-8') ?>"
+                            alt="<?= htmlspecialchars($photo['title'], ENT_QUOTES, 'UTF-8') ?>">
 
-                        <p>
-                            <?= $photo['liked_by_me'] ? '❤️' : '🤍' ?>
-                            <?= (int) $photo['like_count'] ?> like(s)
-                        </p>
+                        <h2><?= htmlspecialchars($photo['title'], ENT_QUOTES, 'UTF-8') ?></h2>
+                        <p><?= nl2br(htmlspecialchars($photo['description'], ENT_QUOTES, 'UTF-8')) ?></p>
+
+                        <button type="button" class="like-btn<?= $photo['liked_by_me'] ? ' liked' : '' ?>"
+                            data-photo-id="<?= (int) $photo['id'] ?>"
+                            aria-pressed="<?= $photo['liked_by_me'] ? 'true' : 'false' ?>">
+                            <span class="like-icon"><?= $photo['liked_by_me'] ? '❤️' : '🤍' ?></span>
+                            <span class="like-count"><?= (int) $photo['like_count'] ?></span>
+                        </button>
 
                         <ul>
                             <?php foreach ($commentsByPhoto[$photo['id']] ?? [] as $comment): ?>

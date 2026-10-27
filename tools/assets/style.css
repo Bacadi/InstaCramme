@@ -91,7 +91,7 @@ h1 {
     text-align: center;
     max-width: 600px;
     height: 400px;
-
+    margin: 0 1rem;
     justify-self: center;
 
 
@@ -108,15 +108,15 @@ h1 {
     justify-self: center;
 }
 
-label {
+#login-form label {
     font-size: 1.5rem;
 }
 
-label:hover {
+#login-form label:hover {
     cursor: pointer;
 }
 
-input, #login-btn {
+#login-form input, #login-btn {
     margin-bottom: 30px;
     border: 1px solid var(--border);
     border-radius: var(--radius1);
@@ -124,7 +124,7 @@ input, #login-btn {
     transition: all 0.3s ease;
 }
 
-input:hover {
+#login-form input:hover {
     padding: 1rem;
 }
 
@@ -178,7 +178,7 @@ input:hover {
     border: 1px solid var(--border);
     height: 10%;
     display: flex;
-    
+
     justify-content: space-around;
 }
 
@@ -206,7 +206,7 @@ input:hover {
     text-decoration: none;
     padding: 0.5rem;
     width: 2rem;
-    height:2rem;
+    height: 2rem;
     background-color: transparent;
     border: 1px solid var(--border);
     border-radius: var(--radius1);
@@ -227,4 +227,72 @@ input:hover {
     color: var(--bodybg);
     border-color: var(--txt);
     transform: scale(1.5)
+}
+
+#post-section {
+    position: relative;
+    /* référence pour le bouton close */
+    margin: 5rem 8rem;
+    text-align: center;
+    max-width: 1200px;
+    max-height: 800px;
+    border-radius: var(--radius1);
+    box-shadow: 20px 20px 60px 0px #f0a953;
+}
+
+#post-form {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+    width: 75%;
+    justify-self: center;
+    align-items: center;
+}
+
+#post-form input, #post-form textarea {
+    width: 80%;
+    background-color: var(--aux);
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius1);
+    padding: 0.5rem;
+    resize: none;
+    transition: all 0.3s ease;
+}
+
+#image, #desc {
+    height: 8rem;
+}
+
+
+#close-btn, #send-post-btn {
+    background-color: var(--but);
+    color: var(--bodybg);
+    width: 6rem;
+    height: 4rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius1);
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+
+#close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+
+#send-post-btn {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+#close-btn:hover, #send-post-btn:hover {
+    background-color: var(--txt);
+    cursor: pointer;
 }

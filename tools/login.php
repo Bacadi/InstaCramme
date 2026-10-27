@@ -1,66 +1,48 @@
 <?php
-require_once __DIR__ . "/connexion.php";
 session_start();
+require_once __DIR__ . "/../tools/connexion.php";
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = trim($_POST["username"] ?? "");
-    $password = $_POST["password"] ?? "";
+const USERNAME_MAX_LENGTH = 100;
+$warning = '';
 
-    if ($username === "" || $password === "") {
-        exit("Veuillez remplir tous les champs.");
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
 
-    if (strlen($username) > 100) {
-        exit("Le pseudo ne peut pas dépasser 100 caractères.");
-    }
-
-    try {
-        $pdo->beginTransaction();
-
-        $check = $pdo->prepare(
-            "SELECT id, password FROM user WHERE username = ?"
-        );
-        $check->execute([$username]);
-        $user = $check->fetch();
+    if ($username === '' || $password === '') {
+        $warning = 'Veuillez saisir un pseudo et un mot de passe.';
+    } elseif (mb_strlen($username) > USERNAME_MAX_LENGTH) {
+        $warning = 'Le pseudo ne doit pas dépasser ' . USERNAME_MAX_LENGTH . ' caractères.';
+    } else {
+        $stmt = $pdo->prepare('SELECT id, username, password FROM user WHERE username = ?');
+        $stmt->execute([$username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user) {
-            if (!password_verify($password, $user["password"])) {
-                $pdo->rollBack();
-                exit("Mot de passe incorrect.");
+            // Pseudo connu : on vérifie le mot de passe
+            if (!password_verify($password, $user['password'])) {
+                $warning = 'Mot de passe incorrect.';
+            } else {
+                $userId = $user['id'];
+                $username = $user['username'];
             }
-
-            $userId = $user["id"];
         } else {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $nextId = (int) $pdo
-                ->query("SELECT COALESCE(MAX(id), 0) + 1 FROM user")
-                ->fetchColumn();
-
-            $stmt = $pdo->prepare(
-                "INSERT INTO user (id, username, created_at, password)
-                 VALUES (?, ?, CURRENT_TIMESTAMP, ?)"
-            );
-            $stmt->execute([$nextId, $username, $hashedPassword]);
-            $userId = $nextId;
+            // Pseudo inconnu : on crée le compte avec un mot de passe haché
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $pdo->prepare('INSERT INTO user (username, password) VALUES (?, ?)');
+            $stmt->execute([$username, $hash]);
+            $userId = $pdo->lastInsertId();
         }
 
-        $pdo->commit();
-
-        session_regenerate_id(true);
-        $_SESSION["user_id"] = $userId;
-        $_SESSION["username"] = $username;
-        header("Location: ../public/index.php");
-        exit;
-    } catch (PDOException $e) {
-        if ($pdo->inTransaction()) {
-            $pdo->rollBack();
+        if ($warning === '') {
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = (int) $userId;
+            $_SESSION['username'] = $username;
+            header('Location: index.php');
+            exit;
         }
-
-        error_log($e->getMessage());
-        exit("La connexion ou l'inscription n'a pas pu aboutir.");
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -76,11 +58,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <section id="login-section">
         <h1>Connexion à InstaCramme</h1>
+        <?php if ($warning): ?>
+            <p class="error">
+                <?= htmlspecialchars($warning, ENT_QUOTES, 'UTF-8') ?>
+            </p>
+        <?php endif; ?>
         <form id="login-form" method="post">
             <label for="username">Pseudo</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="username" name="username" required maxlength="100">
             <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" required maxlength="255">
             <button type="submit" id="login-btn">→</button>
         </form>
     </section>

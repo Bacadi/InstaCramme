@@ -1,3 +1,26 @@
+<?php
+require_once __DIR__ . "../tools/connexion.php";
+require_once __DIR__ . "../tools/auth.php";
+
+$user_id = filter_input(INPUT_GET,"user_id", FILTER_VALIDATE_INT);
+if (!$user_id) {
+    header("Location: index.php");
+    exit;
+}
+
+$usercheck= $pdo->prepare("SELECT username FROM user WHERE id = ?");
+$usercheck->execute([$user_id]);
+$user = $usercheck->fetch(PDO::FETCH_ASSOC);
+
+if (!$user) {
+    header("Location: index.php");
+    exit;
+}
+
+$userimgs = $pdo->prepare("SELECT posted_at,imge_path FROM photo WHERE user_id = ? DESC");
+$userimgs->execute([$user_id]);
+$imgs= $userimgs->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="fr">
 

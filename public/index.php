@@ -53,6 +53,7 @@ if ($photos) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InstaCramme Main</title>
     <link rel="stylesheet" href="../tools/assets/style.css">
+    <script src="js/comments.js" defer></script>
 </head>
 
 <script src="js/likes.js" defer></script>
@@ -99,17 +100,25 @@ if ($photos) {
                             <span class="like-count"><?= (int) $photo['like_count'] ?></span>
                         </button>
 
-                        <ul>
+                        <ul class="post-comments" aria-label="Commentaires" aria-live="polite">
                             <?php foreach ($commentsByPhoto[$photo['id']] ?? [] as $comment): ?>
-                                <li>
-                                    <a href="profile.php?id=<?= (int) $comment['author_id'] ?>">
+                                <li class="post-comment">
+                                    <a class="comment-author" href="profile.php?id=<?= (int) $comment['author_id'] ?>">
                                         <?= htmlspecialchars($comment['username'], ENT_QUOTES, 'UTF-8') ?>
                                     </a>
                                     :
-                                    <?= htmlspecialchars($comment['content'], ENT_QUOTES, 'UTF-8') ?>
+                                    <span class="comment-content"><?= htmlspecialchars($comment['content'], ENT_QUOTES, 'UTF-8') ?></span>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
+
+                        <form class="comment-form" data-photo-id="<?= (int) $photo['id'] ?>">
+                            <label class="visually-hidden" for="comment-<?= (int) $photo['id'] ?>">Ajouter un commentaire</label>
+                            <input id="comment-<?= (int) $photo['id'] ?>" name="content" type="text"
+                                maxlength="1000" placeholder="Ajouter un commentaire..." required>
+                            <button type="submit">Publier</button>
+                            <p class="comment-feedback" role="status" aria-live="polite"></p>
+                        </form>
                     </article>
                 <?php endforeach; ?>
 

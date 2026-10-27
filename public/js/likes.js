@@ -20,6 +20,13 @@ document.addEventListener('click', async (e) => {
         btn.querySelector('.like-icon').textContent = data.liked ? '❤️' : '🤍';
         btn.classList.toggle('liked', data.liked);
         btn.setAttribute('aria-pressed', data.liked ? 'true' : 'false');
+
+        const likeLabel = btn.querySelector('.like-label');
+        if (likeLabel) {
+            const label = Number(data.likes) === 1 ? 'like' : 'likes';
+            likeLabel.textContent = label;
+            btn.setAttribute('aria-label', `${data.likes} ${label}`);
+        }
     } catch (err) {
         console.error(err);
     } finally {

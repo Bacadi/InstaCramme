@@ -1,67 +1,37 @@
 <?php
 session_start();
-require_once __DIR__ . "/connexion.php";
+require_once __DIR__ . "/../tools/connexion.php";
 
+const USERNAME_MAX_LENGTH = 100;
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = trim($_POST["username"] ?? "");
-    $password = $_POST["password"] ?? "";
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
 
-    if ($username === "" || $password === "") {
-        exit("Veuillez remplir tous les champs.");
-    }
-
-    if (strlen($username) > 100) {
-        exit("Le pseudo ne peut pas dépasser 100 caractères.");
-    }
-
-    try {
-        $pdo->beginTransaction();
-
-        $check = $pdo->prepare(
-            "SELECT id, password FROM user WHERE username = ?"
-        );
-        $check->execute([$username]);
-        $user = $check->fetch();
+    if ($username === '') {
+        $warning = 'Please enter a username.';
+    } elseif (mb_strlen($username) > USERNAME_MAX_LENGTH) {
+        $warning = 'Username must be at most ' . USERNAME_MAX_LENGTH . ' characters.';
+    } else {
+        $stmt = $pdo->prepare('SELECT id, username FROM user WHERE username = ?');
+        $stmt->execute([$username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user) {
-            if (!password_verify($password, $user["password"])) {
-                $pdo->rollBack();
-                exit("Mot de passe incorrect.");
-            }
-
-            $userId = $user["id"];
+            $userId = $user['id'];
+            $username = $user['username'];
         } else {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $nextId = (int) $pdo
-                ->query("SELECT COALESCE(MAX(id), 0) + 1 FROM user")
-                ->fetchColumn();
-
-            $stmt = $pdo->prepare(
-                "INSERT INTO user (id, username, created_at, password)
-                 VALUES (?, ?, CURRENT_TIMESTAMP, ?)"
-            );
-            $stmt->execute([$nextId, $username, $hashedPassword]);
-            $userId = $nextId;
+            $stmt = $pdo->prepare('INSERT INTO user (username) VALUES (?)');
+            $stmt->execute([$username]);
+            $userId = $pdo->lastInsertId();
         }
-
-        $pdo->commit();
 
         session_regenerate_id(true);
-        $_SESSION["user_id"] = $userId;
-        $_SESSION["username"] = $username;
-        header("Location: ../public/index.php");
+        $_SESSION['user_id'] = (int) $userId;
+        $_SESSION['username'] = $username;
+        header('Location: ../public/index.php');
         exit;
-    } catch (PDOException $e) {
-        if ($pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
-
-        error_log($e->getMessage());
-        exit("La connexion ou l'inscription n'a pas pu aboutir.");
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -79,9 +49,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <h1>Connexion à InstaCramme</h1>
         <form id="login-form" method="post">
             <label for="username">Pseudo</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="username" name="username" required maxlength="100">
             <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" required maxlength="100">
             <button type="submit" id="login-btn">→</button>
         </form>
     </section>

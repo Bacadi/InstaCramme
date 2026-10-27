@@ -1,13 +1,13 @@
 <?php
-require_once __DIR__ . "../tools/connexion.php";
-require_once __DIR__ . "../tools/auth.php";
+require_once __DIR__ . "/../tools/connexion.php";
+require_once __DIR__ . "/../tools/auth.php";
 
-$user_id = filter_input(INPUT_GET,"user_id", FILTER_VALIDATE_INT);
+$user_id = filter_input(INPUT_GET,"id", FILTER_VALIDATE_INT);
 if (!$user_id) {
     header("Location: index.php");
     exit;
 }
-
+//check user
 $usercheck= $pdo->prepare("SELECT username FROM user WHERE id = ?");
 $usercheck->execute([$user_id]);
 $user = $usercheck->fetch(PDO::FETCH_ASSOC);
@@ -17,9 +17,16 @@ if (!$user) {
     exit;
 }
 
-$userimgs = $pdo->prepare("SELECT posted_at,imge_path FROM photo WHERE user_id = ? DESC");
+// user images
+$userimgs = $pdo->prepare("SELECT posted_at,image_path FROM photo WHERE user_id = ? ORDER BY posted_at DESC");
 $userimgs->execute([$user_id]);
 $imgs= $userimgs->fetchAll(PDO::FETCH_ASSOC);
+
+//user comments
+$usercom = $pdo->prepare("SELECT photo_id, content, written_at FROM comment WHERE user_id = ? ORDER BY written_at DESC");
+$usercom->execute([$user_id]);
+$comments = $usercom->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -50,7 +57,7 @@ $imgs= $userimgs->fetchAll(PDO::FETCH_ASSOC);
 
         <section id="main-profile-section">
             <div id="profile-info">
-                <h1><!--NOM PROFIL--></h1>
+                <h1><?= htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8') ?></h1>
             </div>
             <div id="profile-nav">
                 <button id="shared-img">Photos partagées</button>

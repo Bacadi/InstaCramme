@@ -57,7 +57,7 @@ $comments = $usercom->fetchAll(PDO::FETCH_ASSOC);
 
         <section id="main-profile-section">
             <div id="profile-info">
-                <h1><?= htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8') ?></h1>
+                <p><?= htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8') ?></p>
             </div>
             <div id="profile-nav">
                 <button id="shared-img">Photos partagées</button>

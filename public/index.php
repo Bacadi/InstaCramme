@@ -2,8 +2,47 @@
 require_once __DIR__ . "/../tools/connexion.php";
 require_once __DIR__ . "/../tools/auth.php";
 
+$currentUserId = (int) ($_SESSION['user_id'] ?? 0);
 
+// 1. Toutes les photos + auteur + nombre de likes + "est-ce que j'ai liké ?"
+$stmt = $pdo->prepare("
+    SELECT
+        p.id,
+        p.image_path,
+        p.posted_at,
+        u.id AS author_id,
+        u.username,
+        (SELECT COUNT(*) FROM `like` l WHERE l.photo_id = p.id) AS like_count,
+        EXISTS(SELECT 1 FROM `like` l WHERE l.photo_id = p.id AND l.user_id = ?) AS liked_by_me
+    FROM photo p
+    JOIN user u ON u.id = p.user_id
+    ORDER BY p.posted_at DESC
+");
+$stmt->execute([$currentUserId]);
+$photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// 2. Commentaires de toutes ces photos, avec le pseudo de l'auteur
+$commentsByPhoto = [];
+
+if ($photos) {
+    $photoIds = array_column($photos, 'id');
+    $placeholders = implode(',', array_fill(0, count($photoIds), '?'));
+
+    $stmt = $pdo->prepare("
+        SELECT c.photo_id, c.content, c.written_at, u.id AS author_id, u.username
+        FROM comment c
+        JOIN user u ON u.id = c.user_id
+        WHERE c.photo_id IN ($placeholders)
+        ORDER BY c.written_at ASC
+    ");
+    $stmt->execute($photoIds);
+
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $comment) {
+        $commentsByPhoto[$comment['photo_id']][] = $comment;
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -33,6 +72,40 @@ require_once __DIR__ . "/../tools/auth.php";
         <section id="main-index-section">
             <h1>InstaCramme</h1>
             <div id="img-container">
+                <?php foreach ($photos as $photo): ?>
+                    <article>
+                        <div>
+                            <a href="profile.php?id=<?= (int) $photo['author_id'] ?>">
+                                <?= htmlspecialchars($photo['username'], ENT_QUOTES, 'UTF-8')?></a>
+                            <time>
+                                <?= htmlspecialchars($photo['posted_at'], ENT_QUOTES, 'UTF-8') ?>
+                            </time>
+                        </div>
+
+                        <img src="<?= htmlspecialchars($photo['image_path'], ENT_QUOTES, 'UTF-8') ?>" alt="">
+
+                        <p>
+                            <?= $photo['liked_by_me'] ? '❤️' : '🤍' ?>
+                            <?= (int) $photo['like_count'] ?> like(s)
+                        </p>
+
+                        <ul>
+                            <?php foreach ($commentsByPhoto[$photo['id']] ?? [] as $comment): ?>
+                                <li>
+                                    <a href="profile.php?id=<?= (int) $comment['author_id'] ?>">
+                                        <?= htmlspecialchars($comment['username'], ENT_QUOTES, 'UTF-8') ?>
+                                    </a>
+                                    :
+                                    <?= htmlspecialchars($comment['content'], ENT_QUOTES, 'UTF-8') ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </article>
+                <?php endforeach; ?>
+
+                <?php if (!$photos): ?>
+                    <p>Aucune photo pour le moment.</p>
+                <?php endif; ?>
             </div>
         </section>
     </main>

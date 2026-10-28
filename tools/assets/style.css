@@ -541,6 +541,56 @@ article img {
     border-color: var(--txt);
 }
 
+
+
+
+
+
+.fx-ember {
+  animation: fx-ember 1.3s ease-in-out infinite alternate;
+}
+
+#img-container article {
+    animation: ember 1.3s infinite alternate;
+}
+
+@keyframes fx-ember {
+  0% {
+    text-shadow:
+      0 -2px 6px  #ffab40,
+      0 -6px 14px #ff6d00,
+      0 -12px 28px #dd2c00,
+      0 -20px 44px rgba(179, 2, 2, 0.55);
+  }
+  100% {
+    text-shadow:
+      0 -3px 8px  #ffc46b,
+      0 -9px 20px #ff8f1f,
+      0 -18px 38px #ff3d00,
+      0 -30px 60px rgba(213, 0, 0, .8);
+  }
+}
+
+@keyframes ember {
+  0% {
+    box-shadow:
+      0 -2px 6px  #ffab40,
+      0 -6px 14px #ff6d00,
+      0 -12px 28px #dd2c00,
+      0 -20px 44px rgba(179, 2, 2, 0.55);
+  }
+  100% {
+    box-shadow:
+      0 -3px 8px  #ffc46b,
+      0 -9px 20px #ff8f1f,
+      0 -18px 38px #ff3d00,
+      0 -30px 60px rgba(213, 0, 0, .8);
+  }
+}
+
+
+
+
 @media screen and (max-width: 767px) {
 
     /* TOUT */

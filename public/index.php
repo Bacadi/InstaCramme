@@ -75,7 +75,7 @@ if ($photos) {
         </header>
 
         <section id="main-index-section">
-            <h1>InstaCramme</h1>
+            <h1 class="fx-ember">InstaCramme</h1>
             <div id="img-container">
                 <?php foreach ($photos as $photo): ?>
                     <article>

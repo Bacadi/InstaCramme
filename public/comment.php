@@ -66,11 +66,11 @@ if (!$comment) {
     exit;
 }
 
-$stmt = $pdo->prepare('SELECT username FROM user WHERE id = ?');
+$stmt = $pdo->prepare('SELECT username, pp_path FROM user WHERE id = ?');
 $stmt->execute([$userId]);
-$username = $stmt->fetchColumn();
+$author = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($username === false) {
+if (!$author) {
     http_response_code(500);
     echo json_encode(['error' => 'Utilisateur introuvable']);
     exit;
@@ -82,5 +82,6 @@ echo json_encode([
     'content' => $content,
     'written_at' => $comment['written_at'],
     'author_id' => $userId,
-    'username' => $username,
+    'username' => $author['username'],
+    'author_photo_path' => $author['pp_path'],
 ]);

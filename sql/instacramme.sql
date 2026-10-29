@@ -67,10 +67,13 @@ CREATE TABLE `photo` (
 --
 
 CREATE TABLE `user` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL,
-  `created_at` timestamp NOT NULL,
-  `password` varchar(100) NOT NULL
+  `pp_path` varchar(255) DEFAULT NULL,
+  `bio` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 COMMIT;
 

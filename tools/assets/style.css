@@ -79,11 +79,15 @@ h1 {
     transition: all 0.3s ease;
 }
 
-#profile-icon, #home-icon {
+#home-icon {
     transform: scale(0.7);
 }
 
-#profile-icon:hover, #home-icon:hover, #logout-icon:hover {
+#profile-icon:hover {
+    transform: scale(1.05);
+}
+
+#home-icon:hover, #logout-icon:hover {
     transform: scale(0.85);
 }
 
@@ -204,8 +208,45 @@ h1 {
 }
 
 .post-comment {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     line-height: 1.45;
     overflow-wrap: anywhere;
+}
+
+.post-author,
+.profile-post-author,
+.profile-comment-author {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.post-author {
+    flex-wrap: wrap;
+}
+
+.post-author time {
+    margin-left: auto;
+}
+
+.profile-post-author {
+    padding: 0.75rem 0.85rem;
+}
+
+.user-avatar {
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: 0 0 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.avatar-link {
+    display: inline-flex;
+    flex: 0 0 auto;
 }
 
 .comment-author {
@@ -290,6 +331,29 @@ h1 {
     font-size: 2rem;
 }
 
+#bio {
+    max-width: 100%;
+    margin-right: 2rem;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.profile-stats {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+}
+
+.profile-post-count {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.profile-post-count strong {
+    font-size: 1.25rem;
+}
+
 #profile-nav {
     border: 1px solid var(--border);
     min-height: 4rem;
@@ -346,6 +410,12 @@ h1 {
     object-fit: cover;
 }
 
+.profile-photo-card .profile-post-author .user-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    aspect-ratio: auto;
+}
+
 .profile-photo-details {
     display: flex;
     align-items: center;
@@ -389,6 +459,15 @@ h1 {
 
 .profile-comment-details {
     min-width: 0;
+}
+
+.profile-comment-author {
+    margin-bottom: 0.4rem;
+}
+
+.profile-comment-author a {
+    font-weight: 700;
+    text-decoration: none;
 }
 
 .profile-comment-details p {
@@ -471,8 +550,42 @@ h1 {
     transition: all 0.3s ease;
 }
 
-#image, #desc {
+#desc {
     height: 8rem;
+}
+
+#post-form input[type="file"] {
+    height: auto;
+    padding: 0.5rem;
+}
+
+#post-form input[type="file"]::file-selector-button {
+    margin-right: 0.75rem;
+    padding: 0.55rem 1rem;
+    background-color: var(--but);
+    color: var(--bodybg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius1);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+#post-form input[type="file"]::file-selector-button:hover {
+    cursor: pointer;
+    background-color: var(--txt);
+    border-color: var(--txt);
+}
+
+#post-form input:focus-visible,
+#post-form textarea:focus-visible {
+    outline: none;
+    border-color: var(--txt);
+    box-shadow: 0 0 0 3px rgb(125 79 0 / 15%);
+}
+
+#post-form input[type="file"]:focus-visible {
+    outline: 2px solid var(--txt);
+    outline-offset: 2px;
 }
 
 
@@ -550,7 +663,7 @@ article img {
   animation: fx-ember 1.3s ease-in-out infinite alternate;
 }
 
-#img-container article {
+.brule {
     animation: ember 1.3s infinite alternate;
 }
 
@@ -633,11 +746,15 @@ article img {
         transition: all 0.3s ease;
     }
 
-    #profile-icon, #home-icon {
+    #home-icon {
         transform: scale(0.7);
     }
 
-    #profile-icon:hover, #home-icon:hover, #logout-icon:hover {
+    #profile-icon:hover {
+        transform: scale(1.05);
+    }
+
+    #home-icon:hover, #logout-icon:hover {
         transform: scale(0.85);
     }
 
@@ -719,4 +836,132 @@ article img {
         font-size: 0.7rem;
         transition: all 0.3s ease;
     }
+}
+.profile-username {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#edit-profile-form {
+    width: calc(100% - 2rem);
+    max-width: 32rem;
+    margin: 1.5rem auto;
+    display: none;
+    text-align: left;
+}
+
+#edit-profile-form label {
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+#edit-profile-form input[type="text"],
+#edit-profile-form textarea,
+#edit-profile-form input[type="file"] {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem 1rem;
+    background-color: var(--aux);
+    border: 1px solid var(--border);
+    border-radius: var(--radius1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#edit-profile-form textarea#profile-bio {
+    min-height: 7rem;
+    overflow-x: clip;
+    resize: none;
+    scrollbar-width: none;
+}
+
+#edit-profile-form textarea#profile-bio::-webkit-scrollbar {
+    display: none;
+}
+
+#bio-character-count {
+    display: block;
+    width: fit-content;
+    margin: -0.5rem 0 0.75rem auto;
+    padding: 0.25rem 0.75rem;
+    background-color: var(--aux);
+    border: 1px solid var(--border);
+    border-radius: var(--radius1);
+    color: var(--txt);
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+#edit-profile-form input[type="file"] {
+    padding: 0.5rem;
+}
+
+#edit-profile-form button {
+    margin: 0.25rem 0.5rem 0.25rem 0;
+}
+
+#edit-profile-form input[type="file"]::file-selector-button {
+    margin-right: 0.75rem;
+    padding: 0.55rem 1rem;
+    background-color: var(--but);
+    color: var(--bodybg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius1);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+#edit-profile-form input[type="file"]::file-selector-button:hover {
+    cursor: pointer;
+    background-color: var(--txt);
+    border-color: var(--txt);
+}
+
+#edit-profile-form input:focus-visible,
+#edit-profile-form textarea:focus-visible {
+    outline: none;
+    border-color: var(--txt);
+    box-shadow: 0 0 0 3px rgb(125 79 0 / 15%);
+}
+
+#edit-profile-form input[type="file"]:focus-visible {
+    outline: 2px solid var(--txt);
+    outline-offset: 2px;
+}
+
+#edit-profile-btn,
+#edit-profile-form button {
+    padding: 0.55rem 1rem;
+    background-color: var(--but);
+    color: var(--bodybg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius1);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+#edit-profile-btn:hover,
+#edit-profile-form button:hover {
+    cursor: pointer;
+    background-color: var(--txt);
+    border-color: var(--txt);
+}
+
+#edit-profile-btn:focus-visible,
+#edit-profile-form button:focus-visible {
+    outline: 2px solid var(--txt);
+    outline-offset: 2px;
+}
+
+#profile-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+#pp {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
 }

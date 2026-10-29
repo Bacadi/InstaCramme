@@ -36,6 +36,16 @@ document.addEventListener('submit', async (event) => {
         const item = document.createElement('li');
         item.className = 'post-comment';
 
+        const avatarLink = document.createElement('a');
+        avatarLink.className = 'avatar-link';
+        avatarLink.href = `profile.php?id=${encodeURIComponent(data.author_id)}`;
+
+        const avatar = document.createElement('img');
+        avatar.className = 'user-avatar';
+        avatar.src = data.author_photo_path || '../tools/assets/icon.svg';
+        avatar.alt = '';
+        avatarLink.append(avatar);
+
         const author = document.createElement('a');
         author.className = 'comment-author';
         author.href = `profile.php?id=${encodeURIComponent(data.author_id)}`;
@@ -45,7 +55,7 @@ document.addEventListener('submit', async (event) => {
         commentText.className = 'comment-content';
         commentText.textContent = data.content;
 
-        item.append(author, document.createTextNode(' : '), commentText);
+        item.append(avatarLink, author, document.createTextNode(' : '), commentText);
         list.append(item);
         input.value = '';
         feedback.textContent = 'Commentaire publié.';

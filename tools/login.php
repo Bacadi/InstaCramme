@@ -29,8 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // Pseudo inconnu : on crée le compte avec un mot de passe haché
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare('INSERT INTO user (username, password) VALUES (?, ?)');
-            $stmt->execute([$username, $hash]);
+            $stmt = $pdo->prepare(
+                'INSERT INTO user (username, password, pp_path, bio) VALUES (?, ?, ?, ?)'
+            );
+            $stmt->execute([$username, $hash, '../tools/assets/icon.svg', '']);
             $userId = $pdo->lastInsertId();
         }
 
@@ -58,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <section id="login-section">
         <h1>Connexion à InstaCramme</h1>
+        <p>Pas encore de compte ? Saisis un nouveau pseudo et un mot de passe : ton compte sera créé automatiquement.</p>
         <?php if ($warning): ?>
             <p class="error">
                 <?= htmlspecialchars($warning, ENT_QUOTES, 'UTF-8') ?>

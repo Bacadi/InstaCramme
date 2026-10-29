@@ -15,9 +15,9 @@ L'application utilise tout l'écran de façon optimal sur tous les appareils
 Le design est sobre, moderne, simple et intuitif
 Compte
 
-En tant qu'utilisateur non connecté, je dois me connecter en saisissant seulement mon pseudo. Il n'y a pas de mot de passe.
-Si le pseudo n'est pas connu dans la base de données, un nouvel utilisateur est créé.
-Si le pseudo est connu dans la base de données, alors je suis connecté sur le profil.
+En tant qu'utilisateur non connecté, je peux me connecter avec mon pseudo et mon mot de passe.
+Si le pseudo n'est pas connu dans la base de données, un nouvel utilisateur est créé avec un mot de passe haché.
+Si le pseudo est connu dans la base de données, le mot de passe est vérifié avant la connexion.
 Profils
 
 En tant qu'utilisateur connecté, j'accède à mon profil sur lequel je retrouve mes photos

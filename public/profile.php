@@ -245,7 +245,7 @@ $comments = $usercom->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="../tools/assets/style.css?v=2">
+    <link rel="stylesheet" href="../tools/assets/style.css?v=3">
     <script src="js/comments.js" defer></script>
     <script src="js/profile.js" defer></script>
 </head>

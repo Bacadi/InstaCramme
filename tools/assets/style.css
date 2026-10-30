@@ -295,6 +295,36 @@ h1 {
     opacity: 0.65;
 }
 
+.delete-comment-form {
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+
+.delete-comment-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0.35rem;
+    background-color: var(--but);
+    color: var(--bodybg);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.delete-comment-btn:hover {
+    cursor: pointer;
+    background-color: var(--txt);
+    border-color: var(--txt);
+}
+
+.delete-comment-btn:focus-visible {
+    outline: 2px solid var(--txt);
+    outline-offset: 2px;
+}
+
 .comment-feedback {
     grid-column: 1 / -1;
     min-height: 1.2em;

@@ -202,7 +202,7 @@ if ($imgs) {
     $placeholders = implode(',', array_fill(0, count($photoIds), '?'));
 
     $photoComments = $pdo->prepare("
-        SELECT c.photo_id, c.content, c.written_at, u.id AS author_id, u.username,
+        SELECT c.id c.photo_id, c.content, c.written_at, u.id AS author_id, u.username,
             u.pp_path AS author_photo_path
         FROM comment c
         JOIN user u ON u.id = c.user_id

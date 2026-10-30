@@ -202,7 +202,7 @@ if ($imgs) {
     $placeholders = implode(',', array_fill(0, count($photoIds), '?'));
 
     $photoComments = $pdo->prepare("
-        SELECT c.id c.photo_id, c.content, c.written_at, u.id AS author_id, u.username,
+        SELECT c.id, c.photo_id, c.content, c.written_at, u.id AS author_id, u.username,
             u.pp_path AS author_photo_path
         FROM comment c
         JOIN user u ON u.id = c.user_id
@@ -405,7 +405,7 @@ $comments = $usercom->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                     <ul class="post-comments" aria-label="Commentaires" aria-live="polite">
                                         <?php foreach ($commentsByPhoto[$img['id']] ?? [] as $comment): ?>
-                                            <form class="post-comment">
+                                            <li class="post-comment">
                                                 <a class="avatar-link" href="profile.php?id=<?= (int) $comment['author_id'] ?>">
                                                     <img class="user-avatar"
                                                         src="<?= htmlspecialchars($comment['author_photo_path'] ?: '../tools/assets/icon.svg', ENT_QUOTES, 'UTF-8') ?>"
@@ -419,14 +419,14 @@ $comments = $usercom->fetchAll(PDO::FETCH_ASSOC);
                                                     class="comment-content"><?= htmlspecialchars($comment['content'], ENT_QUOTES, 'UTF-8') ?></span>
                                                 <?php if ($isOwnProfile): ?>
                                                     <form method="post" action="delete_comment.php" class="delete-comment-form"
-                                                        onsubmit="return confirm('Supprimer ce commentaire ?');"></form>
-                                                    <input type="hidden" name="comment_id" value="<?= (int) $comment['id'] ?>">
-                                                    <input type="hidden" name="csrf_token"
-                                                        value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                                                    <button type="submit" class="delete-comment-btn"
-                                                        aria-label="Supprimer ce commentaire">🗑</button>
-                                                </form>
-                                            <?php endif; ?>
+                                                        onsubmit="return confirm('Supprimer ce commentaire ?');">
+                                                        <input type="hidden" name="comment_id" value="<?= (int) $comment['id'] ?>">
+                                                        <input type="hidden" name="csrf_token"
+                                                            value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                                        <button type="submit" class="delete-comment-btn"
+                                                            aria-label="Supprimer ce commentaire">🗑</button>
+                                                    </form>
+                                                <?php endif; ?>
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>

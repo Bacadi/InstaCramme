@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit("La bio ne doit pas dépasser 255 caractères.");
     }
 
-  
+
     // Conserver le chemin de la photo actuelle
     $currentPhoto = $pdo->prepare(
         "SELECT pp_path FROM user WHERE id = ?"
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $allowedTypes = [
             'image/jpeg' => 'jpg',
-            'image/png'  => 'png',
+            'image/png' => 'png',
             'image/webp' => 'webp'
         ];
 
@@ -95,19 +95,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (getimagesize($file['tmp_name']) === false) {
             exit("Le fichier envoyé n'est pas une image valide.");
             $imageInfo = getimagesize($file['tmp_name']);
-            }
+        }
 
         if ($imageInfo === false) {
-        exit("Le fichier envoyé n'est pas une image valide.");
+            exit("Le fichier envoyé n'est pas une image valide.");
         }
 
-            $width = $imageInfo[0];
-            $height = $imageInfo[1];
+        $width = $imageInfo[0];
+        $height = $imageInfo[1];
 
         if ($width > 1000 || $height > 1000) {
-        exit("La photo ne doit pas dépasser 1000 × 1000 pixels.");
+            exit("La photo ne doit pas dépasser 1000 × 1000 pixels.");
         }
-        
+
 
         // Dossier de destination sur le serveur
         $uploadDirectory = __DIR__ . '/uploads/profiles/';
@@ -289,20 +289,19 @@ $comments = $usercom->fetchAll(PDO::FETCH_ASSOC);
                 <p id="bio"><?= htmlspecialchars($user['bio'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
             </div>
             <?php if ($isOwnProfile): ?>
-                <form id="edit-profile-form" method="POST" action="profile.php?id=<?= (int) $user_id ?>" enctype="multipart/form-data">
+                <form id="edit-profile-form" method="POST" action="profile.php?id=<?= (int) $user_id ?>"
+                    enctype="multipart/form-data">
                     <input type="hidden" name="csrf_token"
                         value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
                     <input type="text" name="username" maxlength="100" required
                         value="<?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?>"
                         placeholder="Entrer votre pseudo">
-                    <textarea id="profile-bio" name="bio" maxlength="255" placeholder="Entrer votre bio"><?= htmlspecialchars($user['bio'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
-                    <output id="bio-character-count" for="profile-bio" aria-live="polite"><?= mb_strlen($user['bio'] ?? '') ?>/255</output>
+                    <textarea id="profile-bio" name="bio" maxlength="255"
+                        placeholder="Entrer votre bio"><?= htmlspecialchars($user['bio'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
+                    <output id="bio-character-count" for="profile-bio"
+                        aria-live="polite"><?= mb_strlen($user['bio'] ?? '') ?>/255</output>
                     <label for="profile-photo">Nouvelle photo de profil</label>
-                    <input
-                        type="file"
-                        id="profile-photo"
-                        name="profile_photo"
-                        accept="image/jpeg,image/png,image/webp">
+                    <input type="file" id="profile-photo" name="profile_photo" accept="image/jpeg,image/png,image/webp">
                     <button type="submit">Enregistrer</button>
                     <button type="button" id="cancel-edit">Annuler</button>
                 </form>
@@ -328,7 +327,8 @@ $comments = $usercom->fetchAll(PDO::FETCH_ASSOC);
                         <?php foreach ($comments as $comment): ?>
                             <article class="profile-comment">
                                 <?php if ($comment['image_path']): ?>
-                                    <a class="profile-comment-photo" href="profile.php?id=<?= (int) $comment['photo_owner_id'] ?>&view=photos">
+                                    <a class="profile-comment-photo"
+                                        href="profile.php?id=<?= (int) $comment['photo_owner_id'] ?>&view=photos">
                                         <img src="<?= htmlspecialchars($comment['image_path'], ENT_QUOTES, 'UTF-8') ?>"
                                             alt="Photo commentée">
                                     </a>
@@ -379,9 +379,9 @@ $comments = $usercom->fetchAll(PDO::FETCH_ASSOC);
                                         </a>
                                     </div>
                                     <img src="<?= htmlspecialchars(
-                                    $img['image_path'],
-                                    ENT_QUOTES,
-                                    'UTF-8'
+                                        $img['image_path'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
                                     ) ?>" alt="Photo partagée">
                                     <div class="profile-photo-details">
                                         <time datetime="<?= htmlspecialchars(
@@ -397,14 +397,15 @@ $comments = $usercom->fetchAll(PDO::FETCH_ASSOC);
                                         </time>
                                         <span class="profile-like-count"
                                             aria-label="<?= (int) $img['like_count'] ?> <?= (int) $img['like_count'] === 1 ? 'like' : 'likes' ?>">
-                                            <span class="like-icon" aria-hidden="true"><?= $img['liked_by_me'] ? '❤️' : '🤍' ?></span>
+                                            <span class="like-icon"
+                                                aria-hidden="true"><?= $img['liked_by_me'] ? '❤️' : '🤍' ?></span>
                                             <span class="like-count"><?= (int) $img['like_count'] ?></span>
                                             <span class="like-label"><?= (int) $img['like_count'] === 1 ? 'like' : 'likes' ?></span>
                                         </span>
                                     </div>
                                     <ul class="post-comments" aria-label="Commentaires" aria-live="polite">
                                         <?php foreach ($commentsByPhoto[$img['id']] ?? [] as $comment): ?>
-                                            <li class="post-comment">
+                                            <form class="post-comment">
                                                 <a class="avatar-link" href="profile.php?id=<?= (int) $comment['author_id'] ?>">
                                                     <img class="user-avatar"
                                                         src="<?= htmlspecialchars($comment['author_photo_path'] ?: '../tools/assets/icon.svg', ENT_QUOTES, 'UTF-8') ?>"
@@ -414,7 +415,18 @@ $comments = $usercom->fetchAll(PDO::FETCH_ASSOC);
                                                     <?= htmlspecialchars($comment['username'], ENT_QUOTES, 'UTF-8') ?>
                                                 </a>
                                                 :
-                                                <span class="comment-content"><?= htmlspecialchars($comment['content'], ENT_QUOTES, 'UTF-8') ?></span>
+                                                <span
+                                                    class="comment-content"><?= htmlspecialchars($comment['content'], ENT_QUOTES, 'UTF-8') ?></span>
+                                                <?php if ($isOwnProfile): ?>
+                                                    <form method="post" action="delete_comment.php" class="delete-comment-form"
+                                                        onsubmit="return confirm('Supprimer ce commentaire ?');"></form>
+                                                    <input type="hidden" name="comment_id" value="<?= (int) $comment['id'] ?>">
+                                                    <input type="hidden" name="csrf_token"
+                                                        value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                                    <button type="submit" class="delete-comment-btn"
+                                                        aria-label="Supprimer ce commentaire">🗑</button>
+                                                </form>
+                                            <?php endif; ?>
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>

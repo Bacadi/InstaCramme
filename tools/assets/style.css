@@ -178,7 +178,7 @@ h1 {
     padding: 0 1rem;
 }
 
-#img-container > article {
+#img-container>article {
     overflow: hidden;
     padding: 1rem;
     text-align: left;
@@ -188,14 +188,14 @@ h1 {
     box-shadow: 0 0.5rem 1.25rem rgb(125 79 0 / 12%);
 }
 
-#img-container > article > .post-img {
+#img-container>article>.post-img {
     width: 100%;
     max-height: 38rem;
     margin: 0.75rem auto;
     object-fit: cover;
 }
 
-#img-container > article > ul {
+#img-container>article>ul {
     list-style: none;
 }
 
@@ -690,7 +690,7 @@ article img {
 
 
 .fx-ember {
-  animation: fx-ember 1.3s ease-in-out infinite alternate;
+    animation: fx-ember 1.3s ease-in-out infinite alternate;
 }
 
 .brule {
@@ -698,37 +698,39 @@ article img {
 }
 
 @keyframes fx-ember {
-  0% {
-    text-shadow:
-      0 -2px 6px  #ffab40,
-      0 -6px 14px #ff6d00,
-      0 -12px 28px #dd2c00,
-      0 -20px 44px rgba(179, 2, 2, 0.55);
-  }
-  100% {
-    text-shadow:
-      0 -3px 8px  #ffc46b,
-      0 -9px 20px #ff8f1f,
-      0 -18px 38px #ff3d00,
-      0 -30px 60px rgba(213, 0, 0, .8);
-  }
+    0% {
+        text-shadow:
+            0 -2px 6px #ffab40,
+            0 -6px 14px #ff6d00,
+            0 -12px 28px #dd2c00,
+            0 -20px 44px rgba(179, 2, 2, 0.55);
+    }
+
+    100% {
+        text-shadow:
+            0 -3px 8px #ffc46b,
+            0 -9px 20px #ff8f1f,
+            0 -18px 38px #ff3d00,
+            0 -30px 60px rgba(213, 0, 0, .8);
+    }
 }
 
 @keyframes ember {
-  0% {
-    box-shadow:
-      0 -2px 6px  #ffab40,
-      0 -6px 14px #ff6d00,
-      0 -12px 28px #dd2c00,
-      0 -20px 44px rgba(179, 2, 2, 0.55);
-  }
-  100% {
-    box-shadow:
-      0 -3px 8px  #ffc46b,
-      0 -9px 20px #ff8f1f,
-      0 -18px 38px #ff3d00,
-      0 -30px 60px rgba(213, 0, 0, .8);
-  }
+    0% {
+        box-shadow:
+            0 -2px 6px #ffab40,
+            0 -6px 14px #ff6d00,
+            0 -12px 28px #dd2c00,
+            0 -20px 44px rgba(179, 2, 2, 0.55);
+    }
+
+    100% {
+        box-shadow:
+            0 -3px 8px #ffc46b,
+            0 -9px 20px #ff8f1f,
+            0 -18px 38px #ff3d00,
+            0 -30px 60px rgba(213, 0, 0, .8);
+    }
 }
 
 
@@ -844,6 +846,10 @@ article img {
     }
 
     /* POST */
+    #add-post-btn {
+        right: 2.1rem;
+        bottom: 4.2rem;
+    }
 
     #post-section {
         position: relative;
@@ -867,11 +873,13 @@ article img {
         transition: all 0.3s ease;
     }
 }
+
 .profile-username {
     display: flex;
     align-items: center;
     gap: 10px;
 }
+
 #edit-profile-form {
     width: calc(100% - 2rem);
     max-width: 32rem;
@@ -989,6 +997,7 @@ article img {
     object-fit: cover;
     border-radius: 50%;
 }
+
 #pp {
     width: 100px;
     height: 100px;
